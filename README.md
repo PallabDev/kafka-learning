@@ -149,7 +149,7 @@ Lifecycle:
 
 Add your demo video link here:
 
-`https://your-demo-link.example`
+`https://youtu.be/Qzv7umbyyTw`
 
 ## Assumptions and limitations
 
