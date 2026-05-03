@@ -10,17 +10,20 @@
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
       crossorigin=""
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
       :root {
-        --bg: #f3efe6;
-        --panel: rgba(24, 35, 33, 0.82);
-        --panel-soft: rgba(255, 250, 242, 0.88);
-        --text: #182321;
-        --muted: #5f6c68;
+        --bg: #121212;
+        --glass-bg: rgba(25, 25, 25, 0.65);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --text: #e0e0e0;
+        --muted: #a0a0a0;
         --accent: #ef7f45;
         --accent-dark: #c75d28;
-        --line: rgba(24, 35, 33, 0.12);
-        --shadow: 0 24px 60px rgba(18, 31, 27, 0.18);
+        --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        --blur: blur(12px);
       }
 
       * {
@@ -30,148 +33,186 @@
       html,
       body {
         margin: 0;
+        padding: 0;
         min-height: 100%;
-        font-family: "Avenir Next", "Segoe UI", sans-serif;
-        background:
-          radial-gradient(circle at top left, rgba(239, 127, 69, 0.22), transparent 28%),
-          linear-gradient(180deg, #f6f1e7 0%, #ebe5d9 100%);
+        font-family: "Inter", "Segoe UI", sans-serif;
+        background: var(--bg);
         color: var(--text);
-      }
-
-      body {
         overflow: hidden;
       }
 
       #map {
         height: 100vh;
         width: 100vw;
+        z-index: 1;
       }
 
       .shell {
         position: relative;
+        height: 100vh;
+        width: 100vw;
       }
 
-      .panel {
-        position: absolute;
-        z-index: 500;
-        border: 1px solid var(--line);
+      .glass {
+        background: var(--glass-bg);
+        backdrop-filter: var(--blur);
+        -webkit-backdrop-filter: var(--blur);
+        border: 1px solid var(--glass-border);
         box-shadow: var(--shadow);
       }
 
-      .hero {
+      /* Top Bar */
+      .top-bar {
+        position: absolute;
         top: 20px;
-        left: 20px;
-        width: min(360px, calc(100vw - 40px));
-        padding: 20px;
-        border-radius: 24px;
-        background: rgba(255, 250, 242, 0.96);
-      }
-
-      .hero h1 {
-        margin: 0;
-        font-size: clamp(1.9rem, 4vw, 2.7rem);
-        line-height: 0.95;
-        letter-spacing: -0.05em;
-      }
-
-      .hero p {
-        margin: 12px 0 0;
-        color: var(--muted);
-        line-height: 1.5;
-      }
-
-      .meta-row {
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100vw - 40px);
+        max-width: 800px;
+        z-index: 500;
+        border-radius: 16px;
+        padding: 12px 20px;
         display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 18px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
       }
 
-      .pill {
-        padding: 10px 14px;
-        border-radius: 999px;
-        font-size: 0.92rem;
-        border: 1px solid rgba(24, 35, 33, 0.08);
-        background: rgba(255, 255, 255, 0.78);
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
       }
 
-      .session-card {
-        top: 20px;
-        right: 20px;
-        width: min(300px, calc(100vw - 40px));
-        padding: 18px;
-        border-radius: 22px;
-        color: #f6efe7;
-        background:
-          linear-gradient(135deg, rgba(23, 37, 33, 0.98), rgba(44, 64, 56, 0.96));
-      }
-
-      .label {
-        margin: 0 0 6px;
-        font-size: 0.74rem;
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-        color: rgba(246, 239, 231, 0.64);
+      .avatar-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        color: white;
       }
 
       .user-name {
         margin: 0;
-        font-size: 1.3rem;
-        letter-spacing: -0.04em;
+        font-size: 1rem;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 150px;
+      }
+
+      .status-pills {
+        display: flex;
+        gap: 8px;
+        flex: 1;
+        justify-content: center;
+      }
+
+      .pill {
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--glass-border);
+        white-space: nowrap;
+      }
+
+      .icon-btn {
+        appearance: none;
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text);
+        transition: all 0.2s ease;
+      }
+
+      .icon-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .logout-btn {
+        color: #ff6b6b;
+      }
+      .logout-btn:hover {
+        background: rgba(255, 107, 107, 0.15);
+      }
+
+      /* FAB */
+      .fab {
+        position: absolute;
+        bottom: 80px;
+        right: 20px;
+        z-index: 500;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        border: none;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 10px 24px rgba(239, 127, 69, 0.4);
+        transition: all 0.2s ease;
+      }
+
+      .fab:hover {
+        transform: scale(1.05) translateY(-2px);
+        box-shadow: 0 14px 28px rgba(239, 127, 69, 0.5);
+      }
+
+      .fab:active {
+        transform: scale(0.95);
+      }
+
+      /* Bottom Bar */
+      .bottom-bar {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 500;
+        border-radius: 999px;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.85rem;
+        color: var(--muted);
+        white-space: nowrap;
+        max-width: calc(100vw - 40px);
+        overflow: hidden;
       }
 
       .status-text {
-        margin: 10px 0 0;
-        color: rgba(246, 239, 231, 0.78);
-        line-height: 1.45;
+        color: var(--text);
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
-      .session-actions {
-        display: flex;
-        gap: 10px;
-        margin-top: 16px;
+      .divider {
+        opacity: 0.5;
       }
 
-      button {
-        appearance: none;
-        border: 0;
-        border-radius: 999px;
-        padding: 12px 16px;
-        cursor: pointer;
-        font: inherit;
-        transition: transform 0.18s ease, opacity 0.18s ease, background 0.18s ease;
+      .update-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
-      button:hover {
-        transform: translateY(-1px);
-      }
-
-      .primary-btn {
-        color: white;
-        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-      }
-
-      .ghost-btn {
-        color: #f6efe7;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-      }
-
-      .footer-card {
-        right: 20px;
-        bottom: 20px;
-        width: min(320px, calc(100vw - 40px));
-        padding: 18px;
-        border-radius: 22px;
-        background: rgba(255, 253, 248, 0.96);
-      }
-
-      .footer-card p {
-        margin: 8px 0 0;
-        color: var(--muted);
-        line-height: 1.5;
-      }
-
+      /* Leaflet Overrides */
       .map-avatar {
         display: flex;
         align-items: center;
@@ -180,7 +221,7 @@
         height: 22px;
         border-radius: 999px;
         border: 2px solid white;
-        background: linear-gradient(135deg, #ef7f45, #c75d28);
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
         color: white;
         font-size: 0.72rem;
         font-weight: 700;
@@ -188,39 +229,63 @@
       }
 
       .leaflet-tooltip.user-tag {
-        padding: 8px 12px;
-        border: 0;
-        border-radius: 999px;
-        background: rgba(25, 34, 31, 0.92);
-        color: white;
-        box-shadow: 0 12px 24px rgba(20, 29, 26, 0.18);
+        padding: 6px 12px;
+        border: 1px solid var(--glass-border);
+        border-radius: 8px;
+        background: var(--glass-bg);
+        backdrop-filter: var(--blur);
+        -webkit-backdrop-filter: var(--blur);
+        color: var(--text);
+        box-shadow: var(--shadow);
+        font-family: "Inter", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+      .leaflet-tooltip-top:before {
+        border-top-color: var(--glass-border);
       }
 
-      @media (max-width: 760px) {
-        .hero,
-        .session-card,
-        .footer-card {
-          width: calc(100vw - 24px);
+      /* Mobile Adjustments */
+      @media (max-width: 640px) {
+        .top-bar {
+          top: 10px;
+          width: calc(100vw - 20px);
+          padding: 10px 12px;
+          flex-wrap: wrap;
         }
 
-        .hero {
-          top: 12px;
-          left: 12px;
+        .user-name {
+          max-width: 100px;
         }
 
-        .session-card {
-          top: auto;
-          right: 12px;
-          left: 12px;
-          bottom: 12px;
+        .status-pills {
+          order: 3;
+          width: 100%;
+          justify-content: flex-start;
+          margin-top: 4px;
         }
 
-        .footer-card {
+        .pill {
+          font-size: 0.75rem;
+          padding: 4px 8px;
+        }
+
+        .fab {
+          bottom: 70px;
+          right: 15px;
+          width: 50px;
+          height: 50px;
+        }
+
+        .bottom-bar {
+          bottom: 10px;
+          padding: 8px 16px;
+          font-size: 0.75rem;
+          width: calc(100vw - 20px);
+        }
+
+        .divider, .update-label {
           display: none;
-        }
-
-        .session-actions {
-          flex-direction: column;
         }
       }
     </style>
@@ -229,42 +294,36 @@
     <div class="shell">
       <div id="map"></div>
 
-      <aside class="panel hero">
-        <h1>People, not pins.</h1>
-        <p>
-          Share live location with your signed-in identity, then see everyone on
-          the map with their real name beside the marker.
-        </p>
-        <div class="meta-row">
+      <!-- Top Bar -->
+      <header class="top-bar glass">
+        <div class="user-profile">
+          <div class="avatar-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
+          </div>
+          <h2 class="user-name" id="current-user-name">Loading...</h2>
+        </div>
+
+        <div class="status-pills">
           <div class="pill" id="connection-pill">Connecting...</div>
           <div class="pill" id="people-pill">0 people visible</div>
         </div>
-      </aside>
 
-      <aside class="panel session-card">
-        <p class="label">Signed In As</p>
-        <h2 class="user-name" id="current-user-name">Loading...</h2>
-        <p class="status-text" id="status-text">
-          Preparing your live location session.
-        </p>
-        <div class="session-actions">
-          <button class="primary-btn" id="center-map-btn" type="button">
-            Center on me
-          </button>
-          <button class="ghost-btn" id="logout-btn" type="button">
-            Log out
-          </button>
-        </div>
-      </aside>
+        <button class="icon-btn logout-btn" id="logout-btn" type="button" title="Log out">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" /><path d="M9 12h12l-3 -3" /><path d="M18 15l3 -3" /></svg>
+        </button>
+      </header>
 
-      <aside class="panel footer-card">
-        <p class="label">Map Status</p>
-        <strong id="last-update-label">Waiting for first location update...</strong>
-        <p>
-          Your name travels with your live marker, so everyone can identify who
-          is where without opening each popup.
-        </p>
-      </aside>
+      <!-- Center Map FAB -->
+      <button class="fab" id="center-map-btn" type="button" title="Center on me">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="3" /><circle cx="12" cy="12" r="8" /><line x1="12" y1="2" x2="12" y2="4" /><line x1="12" y1="20" x2="12" y2="22" /><line x1="20" y1="12" x2="22" y2="12" /><line x1="2" y1="12" x2="4" y2="12" /></svg>
+      </button>
+
+      <!-- Bottom Status Bar -->
+      <div class="bottom-bar glass">
+        <span class="status-text" id="status-text">Preparing your live location session.</span>
+        <span class="divider">•</span>
+        <span class="update-label" id="last-update-label">Waiting for first location update...</span>
+      </div>
     </div>
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
